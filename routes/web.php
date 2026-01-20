@@ -17,7 +17,7 @@ Route::get('/tentang', function () {
 
 Route::get('/menu', function () {
     return view('menu');
-});
+})->name('menu.index');
 
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {

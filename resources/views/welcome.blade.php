@@ -28,19 +28,46 @@
         <div class="max-w-7xl mx-auto px-6">
             <h3 class="text-3xl font-bold text-center mb-12">Menu Favorit</h3>
 
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @php
-                    $menus = \App\Models\Menu::take(3)->get();
+                    $menus = \App\Models\Menu::where('status', 'Tersedia')->take(6)->get();
                 @endphp
 
                 @foreach ($menus as $menu)
-                    <div class="bg-white rounded-xl shadow hover:shadow-lg transition">
-                        <img src="{{ Str::startsWith($menu->image, 'http') ? $menu->image : 'https://images.unsplash.com/photo-' . $menu->image }}"
-                            class="rounded-t-xl h-48 w-full object-cover">
-                        <div class="p-6">
-                            <h4 class="font-bold text-xl mb-2">{{ $menu->name }}</h4>
-                            <p class="text-gray-600 mb-4">{{ $menu->description }}</p>
-                            <p class="font-semibold text-orange-600">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
+                    <div
+                        class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full overflow-hidden">
+                        <!-- Image -->
+                        <div class="relative overflow-hidden h-56">
+                            <img src="{{ Str::startsWith($menu->image, 'http') ? $menu->image : asset($menu->image) }}"
+                                alt="{{ $menu->name }}"
+                                class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+
+                            <!-- Status Badge -->
+                            <div class="absolute top-4 right-4">
+                                <span class="px-3 py-1 rounded-full text-xs font-bold shadow-lg bg-green-500 text-white">
+                                    <i class="fas fa-check-circle mr-1"></i> Tersedia
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h4 class="text-xl font-bold text-gray-800 mb-2">{{ $menu->name }}</h4>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">{{ $menu->description }}</p>
+
+                            <!-- Price and Action -->
+                            <div class="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
+                                <div>
+                                    <p class="text-xs text-gray-500 mb-1">Harga</p>
+                                    <p class="text-xl font-bold text-orange-600">
+                                        Rp {{ number_format($menu->price, 0, ',', '.') }}
+                                    </p>
+                                </div>
+                                <a href="{{ route('menu.index') }}"
+                                    class="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg font-semibold transition shadow-lg hover:shadow-xl text-sm">
+                                    <i class="fas fa-shopping-cart mr-2"></i>Pesan
+                                </a>
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -89,4 +116,12 @@
             </div>
         </div>
     </section>
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
 @endsection
