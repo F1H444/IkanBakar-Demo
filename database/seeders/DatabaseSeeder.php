@@ -18,8 +18,14 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin Ikan Bakar',
+            'email' => 'admin@ikanbakar.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'role' => 'admin',
+        ]);
+
+        $this->call([
+            MenuSeeder::class,
         ]);
     }
 }
